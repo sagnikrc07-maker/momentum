@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Momentum — Precision Habit & Target Tracker</title>
+  <meta name="description" content="A corporate modern, high-productivity habit and milestone tracker built on the Kinetic Precision design system.">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#f8f9ff",
+            "surface-dim": "#cbdbf5",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "surface-container": "#e5eeff",
+            "surface-container-high": "#dce9ff",
+            "surface-container-highest": "#d3e4fe",
+            "on-surface": "#0b1c30",
+            "on-surface-variant": "#464555",
+            "inverse-surface": "#213145",
+            "inverse-on-surface": "#eaf1ff",
+            "outline": "#777587",
+            "outline-variant": "#c7c4d8",
+            "surface-tint": "#4d44e3",
+            "primary": "#3525cd",
+            "on-primary": "#ffffff",
+            "primary-container": "#4f46e5",
+            "on-primary-container": "#dad7ff",
+            "inverse-primary": "#c3c0ff",
+            "secondary": "#006c49",
+            "on-secondary": "#ffffff",
+            "secondary-container": "#6cf8bb",
+            "on-secondary-container": "#00714d",
+            "tertiary": "#684000",
+            "on-tertiary": "#ffffff",
+            "tertiary-container": "#885500",
+            "on-tertiary-container": "#ffd4a4",
+            "error": "#ba1a1a",
+            "on-error": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#e2dfff",
+            "primary-fixed-dim": "#c3c0ff",
+            "on-primary-fixed": "#0f0069",
+            "on-primary-fixed-variant": "#3323cc",
+            "secondary-fixed": "#6ffbbe",
+            "secondary-fixed-dim": "#4edea3",
+            "on-secondary-fixed": "#002113",
+            "on-secondary-fixed-variant": "#005236",
+            "tertiary-fixed": "#ffddb8",
+            "tertiary-fixed-dim": "#ffb95f",
+            "on-tertiary-fixed": "#2a1700",
+            "on-tertiary-fixed-variant": "#653e00",
+            "background": "#f8f9ff",
+            "on-background": "#0b1c30"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "md": "0.5rem",
+            "lg": "0.75rem",
+            "xl": "1rem",
+            "2xl": "1.5rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "unit": "4px",
+            "stack-sm": "8px",
+            "stack-md": "16px",
+            "stack-lg": "32px",
+            "gutter": "24px",
+            "margin-mobile": "16px",
+            "margin-desktop": "32px",
+            "container-max": "1280px"
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Inter', 'sans-serif'],
+            headline: ['Inter', 'sans-serif'],
+            body: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-surface dark:bg-[#090d16] font-sans text-on-surface dark:text-[#f1f5f9] min-h-screen antialiased selection:bg-primary-fixed selection:text-primary">
+
+  <!-- Desktop Sidebar Navigation -->
+  <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low dark:bg-[#0e1626] z-50 flex flex-col shadow-[1px_0_8px_rgba(0,0,0,0.03)] border-r border-outline-variant/30 dark:border-slate-800 transition-colors">
+    <!-- Brand Logo & Header -->
+    <div class="px-margin-desktop py-stack-lg flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-primary-container flex items-center justify-center text-on-primary shadow-md">
+        <span class="material-symbols-outlined text-[22px]">all_inclusive</span>
+      </div>
+      <div>
+        <span class="font-bold text-2xl text-primary dark:text-[#818cf8] tracking-tight">Momentum</span>
+        <span class="block text-[11px] font-semibold uppercase tracking-wider text-on-surface-variant dark:text-slate-400">Kinetic Precision</span>
+      </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex-1 px-stack-md space-y-1.5 mt-2">
+      <a href="#dashboard" data-path="dashboard" class="flex items-center px-stack-md py-3 rounded-xl transition-all group bg-primary-container text-on-primary-container font-semibold shadow-sm" aria-current="page">
+        <span class="material-symbols-outlined mr-3 text-[22px]">dashboard</span>
+        <span class="text-sm font-medium">Dashboard</span>
+      </a>
+
+      <a href="#habits" data-path="habits" class="flex items-center px-stack-md py-3 rounded-xl text-on-surface-variant dark:text-slate-400 hover:bg-surface-container-high dark:hover:bg-slate-800 hover:text-on-surface dark:hover:text-white transition-all group font-normal">
+        <span class="material-symbols-outlined mr-3 text-[22px]">check_circle</span>
+        <span class="text-sm font-medium">Habits</span>
+      </a>
+
+      <a href="#targets" data-path="targets" class="flex items-center px-stack-md py-3 rounded-xl text-on-surface-variant dark:text-slate-400 hover:bg-surface-container-high dark:hover:bg-slate-800 hover:text-on-surface dark:hover:text-white transition-all group font-normal">
+        <span class="material-symbols-outlined mr-3 text-[22px]">track_changes</span>
+        <span class="text-sm font-medium">Targets</span>
+      </a>
+
+      <a href="#analytics" data-path="analytics" class="flex items-center px-stack-md py-3 rounded-xl text-on-surface-variant dark:text-slate-400 hover:bg-surface-container-high dark:hover:bg-slate-800 hover:text-on-surface dark:hover:text-white transition-all group font-normal">
+        <span class="material-symbols-outlined mr-3 text-[22px]">monitoring</span>
+        <span class="text-sm font-medium">Analytics</span>
+      </a>
+
+      <a href="#settings" data-path="settings" class="flex items-center px-stack-md py-3 rounded-xl text-on-surface-variant dark:text-slate-400 hover:bg-surface-container-high dark:hover:bg-slate-800 hover:text-on-surface dark:hover:text-white transition-all group font-normal">
+        <span class="material-symbols-outlined mr-3 text-[22px]">settings</span>
+        <span class="text-sm font-medium">Settings</span>
+      </a>
+    </nav>
+
+    <!-- Quick Action / User Card in Sidebar Footer -->
+    <div class="p-4 m-3 bg-surface-container dark:bg-slate-800/60 rounded-2xl border border-outline-variant/30 dark:border-slate-700/50 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shadow-sm">
+          AM
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xs font-semibold text-on-surface dark:text-white truncate" id="settings-display-name-text">Alex Mercer</span>
+          <span class="text-[10px] text-on-surface-variant dark:text-slate-400">Pro Achiever</span>
+        </div>
+      </div>
+      <button onclick="navigateTo('settings')" class="p-1 text-on-surface-variant dark:text-slate-400 hover:text-primary transition-colors" title="Account Settings">
+        <span class="material-symbols-outlined text-[18px]">tune</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mobile Bottom Nav Bar -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-outline-variant/30 dark:border-slate-800 z-50 flex justify-around items-center py-2 px-4 shadow-lg">
+    <button onclick="navigateTo('dashboard')" class="flex flex-col items-center gap-1 p-2 text-primary font-medium text-xs">
+      <span class="material-symbols-outlined text-[20px]">dashboard</span>
+      <span>Home</span>
+    </button>
+    <button onclick="navigateTo('habits')" class="flex flex-col items-center gap-1 p-2 text-on-surface-variant dark:text-slate-400 hover:text-primary text-xs">
+      <span class="material-symbols-outlined text-[20px]">check_circle</span>
+      <span>Habits</span>
+    </button>
+    <button onclick="openNewHabitModal()" class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center -mt-5 shadow-lg">
+      <span class="material-symbols-outlined">add</span>
+    </button>
+    <button onclick="navigateTo('targets')" class="flex flex-col items-center gap-1 p-2 text-on-surface-variant dark:text-slate-400 hover:text-primary text-xs">
+      <span class="material-symbols-outlined text-[20px]">track_changes</span>
+      <span>Targets</span>
+    </button>
+    <button onclick="navigateTo('settings')" class="flex flex-col items-center gap-1 p-2 text-on-surface-variant dark:text-slate-400 hover:text-primary text-xs">
+      <span class="material-symbols-outlined text-[20px]">settings</span>
+      <span>Settings</span>
+    </button>
+  </div>
+
+  <!-- Main Content Container -->
+  <div class="md:pl-72 flex flex-col min-h-screen">
+    
+    <!-- Top Sticky Header -->
+    <header class="sticky top-0 right-0 h-20 bg-surface/85 dark:bg-[#090d16]/85 backdrop-blur-xl z-40 flex items-center justify-between px-4 md:px-margin-desktop shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-b border-outline-variant/20 dark:border-slate-800 transition-colors">
+      <!-- High-level Metric Indicators -->
+      <div class="flex items-center gap-4 md:gap-stack-lg">
+        <div class="flex flex-col">
+          <span class="text-[11px] font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">Daily Completion</span>
+          <span class="text-lg md:text-2xl font-bold text-primary dark:text-[#818cf8]" id="header-daily-completion">84%</span>
+        </div>
+        <div class="w-[1px] h-8 bg-outline-variant/50 dark:bg-slate-800"></div>
+        <div class="flex flex-col">
+          <span class="text-[11px] font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">Active Streaks</span>
+          <span class="text-lg md:text-2xl font-bold text-on-surface dark:text-white" id="header-active-streaks">12</span>
+        </div>
+        <div class="w-[1px] h-8 bg-outline-variant/50 dark:bg-slate-800 hidden sm:block"></div>
+        <div class="flex flex-col hidden sm:flex">
+          <span class="text-[11px] font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">Deadlines</span>
+          <span class="text-lg md:text-2xl font-bold text-error dark:text-red-400" id="header-deadlines">3</span>
+        </div>
+      </div>
+
+      <!-- Right Header Actions (Theme & Profile) -->
+      <div class="flex items-center gap-3">
+        <button id="header-theme-toggle" class="p-2.5 rounded-full hover:bg-surface-container-high dark:hover:bg-slate-800 transition-colors text-on-surface-variant dark:text-slate-300" title="Toggle Theme">
+          <span class="material-symbols-outlined text-[20px] dark:hidden">dark_mode</span>
+          <span class="material-symbols-outlined text-[20px] hidden dark:inline">light_mode</span>
+        </button>
+
+        <button onclick="navigateTo('settings')" class="flex items-center gap-2 p-1.5 rounded-full hover:bg-surface-container-high dark:hover:bg-slate-800 transition-colors">
+          <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-semibold text-xs shadow-sm" id="header-user-initials">
+            AM
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main View Switcher Area -->
+    <main class="flex-1 relative bg-surface dark:bg-[#090d16] p-4 md:p-margin-desktop pb-24 md:pb-margin-desktop max-w-[1400px] w-full mx-auto">
+      
+      <!-- Background Ambient Glow Accents -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-10">
+        <div class="absolute -top-[10%] -left-[10%] w-[45vw] h-[45vw] rounded-full bg-primary/20 blur-[120px]"></div>
+        <div class="absolute top-[35%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-secondary/15 blur-[140px]"></div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 1: DASHBOARD OVERVIEW                 -->
+      <!-- ========================================== -->
+      <section id="view-dashboard" class="view-panel relative z-10 flex flex-col gap-stack-lg">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+          
+          <!-- Left Column: Today's Focus Checklist (8 Cols) -->
+          <div class="lg:col-span-8 flex flex-col gap-stack-md">
+            <div class="flex items-center justify-between">
+              <div>
+                <h1 class="text-2xl md:text-3xl font-bold text-on-surface dark:text-white tracking-tight">Today's Focus</h1>
+                <p class="text-sm md:text-base text-on-surface-variant dark:text-slate-400 mt-1" id="dashboard-date-subheader">Loading today's habits...</p>
+              </div>
+              <button onclick="openNewHabitModal()" class="bg-primary hover:bg-primary-container text-on-primary px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all active:scale-95">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                <span>New Habit</span>
+              </button>
+            </div>
+
+            <!-- Dynamic Habit Checklist -->
+            <div class="flex flex-col gap-2.5 mt-2" id="dashboard-habit-list">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </div>
+
+          <!-- Right Column: Streak Spotlight & Active Targets (4 Cols) -->
+          <div class="lg:col-span-4 flex flex-col gap-stack-md">
+            
+            <!-- Streak Spotlight Card -->
+            <div class="bg-gradient-to-br from-primary to-primary-container rounded-[24px] p-6 text-on-primary shadow-lg relative overflow-hidden group hover:shadow-xl transition-shadow cursor-pointer">
+              <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+              <div class="relative z-10">
+                <span class="text-xs uppercase tracking-wider opacity-85 font-semibold mb-2 block">Streak Spotlight</span>
+                <div class="flex items-baseline gap-2">
+                  <span class="text-5xl font-extrabold tracking-tight">42</span>
+                  <span class="text-xl font-medium opacity-85">Days</span>
+                </div>
+                <h3 class="text-xl font-bold mt-1 mb-4">Drink 2L Water</h3>
+                
+                <div class="flex gap-1.5 justify-between mt-4">
+                  <div class="w-full h-8 bg-white/20 rounded-md flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-white"></span></div>
+                  <div class="w-full h-8 bg-white/20 rounded-md flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-white"></span></div>
+                  <div class="w-full h-8 bg-white/20 rounded-md flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-white"></span></div>
+                  <div class="w-full h-8 bg-white/20 rounded-md flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-white"></span></div>
+                  <div class="w-full h-8 bg-white/20 rounded-md flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-white"></span></div>
+                  <div class="w-full h-8 bg-white/20 rounded-md flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-white"></span></div>
+                  <div class="w-full h-8 bg-white/30 rounded-md border border-white/40 flex items-center justify-center"><span class="w-2 h-2 rounded-full bg-white animate-pulse"></span></div>
+                </div>
+                <div class="flex justify-between mt-1.5 opacity-75 text-[10px] uppercase font-bold tracking-wider">
+                  <span>F</span><span>S</span><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Targets Summary Card -->
+            <div class="bg-surface-container-lowest dark:bg-[#0e1626] rounded-2xl p-5 shadow-sm border border-outline-variant/30 dark:border-slate-800">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xs font-bold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">Active Targets</h3>
+                <button onclick="navigateTo('targets')" class="text-xs text-primary dark:text-[#818cf8] hover:underline font-semibold flex items-center gap-0.5">
+                  View all <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                </button>
+              </div>
+              <div class="flex flex-col gap-4" id="dashboard-active-targets">
+                <!-- Rendered dynamically by app.js -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Weekly Momentum Matrix Card -->
+        <div class="bg-surface-container-lowest dark:bg-[#0e1626] rounded-3xl p-6 md:p-stack-lg shadow-sm border border-outline-variant/30 dark:border-slate-800">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 mb-6">
+            <div>
+              <h2 class="text-xl md:text-2xl font-bold text-on-surface dark:text-white">Weekly Momentum</h2>
+              <p class="text-sm text-on-surface-variant dark:text-slate-400">Your habit consistency pattern across the last 7 days.</p>
+            </div>
+            <button onclick="navigateTo('analytics')" class="text-primary dark:text-[#818cf8] text-sm font-semibold hover:underline flex items-center gap-1">
+              View Analytics <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </button>
+          </div>
+
+          <div class="w-full overflow-x-auto pb-2 custom-scrollbar" id="dashboard-heatmap-grid">
+            <!-- Rendered dynamically by app.js -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 2: HABIT MANAGER                      -->
+      <!-- ========================================== -->
+      <section id="view-habits" class="view-panel hidden relative z-10 flex flex-col gap-stack-lg">
+        
+        <!-- Header & Actions -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-stack-md w-full">
+          <div class="flex flex-col gap-1">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-on-surface dark:text-white tracking-tight">Habit Manager</h1>
+            <p class="text-sm md:text-base text-on-surface-variant dark:text-slate-400 max-w-2xl">Organize, track, and fine-tune your routines. Filter by category, search, or status.</p>
+          </div>
+          <button onclick="openNewHabitModal()" class="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-container text-on-primary rounded-xl font-medium text-sm transition-all shadow-sm hover:shadow-md whitespace-nowrap">
+            <span class="material-symbols-outlined text-[18px]">add</span>
+            <span>New Habit</span>
+          </button>
+        </div>
+
+        <!-- Filters & Search Controls Bar -->
+        <div class="flex flex-col lg:flex-row items-center gap-3 bg-surface-container-low dark:bg-[#0e1626] p-3 rounded-2xl w-full shadow-sm border border-outline-variant/30 dark:border-slate-800">
+          <!-- Search input -->
+          <div class="flex items-center gap-2 bg-surface dark:bg-[#090d16] px-3 py-1.5 rounded-xl flex-1 w-full lg:w-auto border border-outline-variant/30 dark:border-slate-700">
+            <span class="material-symbols-outlined text-outline text-[20px]">search</span>
+            <input type="text" id="habits-search-input" placeholder="Search habits by name..." class="w-full bg-transparent border-none outline-none text-sm text-on-surface dark:text-white placeholder:text-on-surface-variant">
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-between">
+            <!-- Category Filter -->
+            <div class="flex items-center gap-1.5 bg-surface dark:bg-[#090d16] px-3 py-1.5 rounded-xl border border-outline-variant/30 dark:border-slate-700">
+              <span class="material-symbols-outlined text-outline text-[18px]">filter_list</span>
+              <select id="habits-filter-category" class="bg-transparent border-none outline-none text-sm text-on-surface dark:text-white cursor-pointer pr-2">
+                <option value="all">All Categories</option>
+                <option value="health">Health</option>
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="learning">Learning</option>
+              </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="flex items-center gap-1.5 bg-surface dark:bg-[#090d16] px-3 py-1.5 rounded-xl border border-outline-variant/30 dark:border-slate-700">
+              <select id="habits-filter-status" class="bg-transparent border-none outline-none text-sm text-on-surface dark:text-white cursor-pointer pr-2">
+                <option value="active">Active Habits</option>
+                <option value="archived">Archived Habits</option>
+                <option value="all">All Habits</option>
+              </select>
+            </div>
+
+            <!-- Sort By -->
+            <div class="flex items-center gap-1.5 bg-surface dark:bg-[#090d16] px-3 py-1.5 rounded-xl border border-outline-variant/30 dark:border-slate-700">
+              <span class="material-symbols-outlined text-outline text-[18px]">sort</span>
+              <select id="habits-sort-select" class="bg-transparent border-none outline-none text-sm text-on-surface dark:text-white cursor-pointer pr-2">
+                <option value="streak-desc">Streak: High to Low</option>
+                <option value="streak-asc">Streak: Low to High</option>
+                <option value="alpha-asc">Name: A to Z</option>
+                <option value="alpha-desc">Name: Z to A</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Habits Table Container -->
+        <div class="w-full overflow-hidden bg-surface-container-lowest dark:bg-[#0e1626] rounded-2xl shadow-sm border border-outline-variant/30 dark:border-slate-800">
+          <div class="grid grid-cols-12 gap-stack-md p-stack-md bg-surface-container-low dark:bg-slate-900/60 font-semibold text-xs text-on-surface-variant dark:text-slate-400 uppercase tracking-wider border-b border-outline-variant/30 dark:border-slate-800">
+            <div class="col-span-5 md:col-span-4 pl-unit">Habit Name</div>
+            <div class="col-span-3 md:col-span-2 hidden md:block">Category</div>
+            <div class="col-span-3 md:col-span-2 text-center md:text-left">Frequency</div>
+            <div class="col-span-4 md:col-span-3 flex justify-between">
+              <span>Current Streak</span>
+              <span class="hidden md:inline">Record</span>
+            </div>
+            <div class="col-span-3 md:col-span-1 text-right pr-unit">Actions</div>
+          </div>
+
+          <div class="flex flex-col" id="habit-manager-list">
+            <!-- Rendered dynamically by app.js -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 3: TARGETS & DEADLINES                -->
+      <!-- ========================================== -->
+      <section id="view-targets" class="view-panel hidden relative z-10 flex flex-col gap-stack-lg">
+        
+        <!-- Header & Actions -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-stack-md">
+          <div class="flex flex-col gap-1">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-on-surface dark:text-white tracking-tight">Target Tracking</h1>
+            <p class="text-sm md:text-base text-on-surface-variant dark:text-slate-400 max-w-2xl">Monitor your high-level goals and approaching deadlines. Keep the momentum going.</p>
+          </div>
+          <button onclick="openNewTargetModal()" class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-on-primary px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all font-medium text-sm whitespace-nowrap">
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            <span>New Target</span>
+          </button>
+        </div>
+
+        <!-- Bento Grid Targets -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="targets-bento-grid">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+
+        <!-- Long Term Visualization Area (Yearly Ambitions) -->
+        <div class="bg-surface-container-lowest dark:bg-[#0e1626] rounded-3xl shadow-sm p-6 md:p-stack-lg flex flex-col md:flex-row gap-gutter border border-outline-variant/30 dark:border-slate-800">
+          <div class="w-full md:w-1/3 flex flex-col justify-center">
+            <h2 class="text-2xl font-bold text-on-surface dark:text-white mb-2">Yearly Ambitions</h2>
+            <p class="text-sm text-on-surface-variant dark:text-slate-400 mb-stack-md leading-relaxed">Visualizing aggregate progress across all active long-term vectors. You are currently outpacing your historical average by 14%.</p>
+            <div class="flex gap-6">
+              <div class="flex flex-col">
+                <span class="text-4xl font-extrabold text-primary dark:text-[#818cf8] tracking-tight" id="ambitions-active-count">4</span>
+                <span class="text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase">Active Targets</span>
+              </div>
+              <div class="w-px bg-outline-variant/50 dark:bg-slate-800"></div>
+              <div class="flex flex-col">
+                <span class="text-4xl font-extrabold text-secondary dark:text-[#4edea3] tracking-tight" id="ambitions-completed-count">1</span>
+                <span class="text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase">Completed</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="w-full md:w-2/3 h-52 bg-surface-container-low dark:bg-slate-900/60 rounded-2xl relative overflow-hidden flex items-end p-5 gap-3 border border-outline-variant/20 dark:border-slate-800">
+            <div class="flex-1 bg-primary/20 hover:bg-primary/30 dark:bg-primary/40 rounded-t-lg h-[40%] transition-all relative group" title="Jan: 40%">
+              <span class="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-highest dark:bg-slate-800 text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">40%</span>
+            </div>
+            <div class="flex-1 bg-primary/25 hover:bg-primary/35 dark:bg-primary/50 rounded-t-lg h-[55%] transition-all relative group" title="Feb: 55%">
+              <span class="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-highest dark:bg-slate-800 text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">55%</span>
+            </div>
+            <div class="flex-1 bg-primary/35 hover:bg-primary/45 dark:bg-primary/60 rounded-t-lg h-[68%] transition-all relative group" title="Mar: 68%">
+              <span class="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-highest dark:bg-slate-800 text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">68%</span>
+            </div>
+            <div class="flex-1 bg-primary/50 hover:bg-primary/60 dark:bg-primary/70 rounded-t-lg h-[75%] transition-all relative group" title="Apr: 75%">
+              <span class="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-highest dark:bg-slate-800 text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">75%</span>
+            </div>
+            <div class="flex-1 bg-primary/65 hover:bg-primary/75 dark:bg-primary/80 rounded-t-lg h-[82%] transition-all relative group" title="May: 82%">
+              <span class="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-highest dark:bg-slate-800 text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">82%</span>
+            </div>
+            <div class="flex-1 bg-primary/80 hover:bg-primary/90 dark:bg-primary/90 rounded-t-lg h-[88%] transition-all relative group" title="Jun: 88%">
+              <span class="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-highest dark:bg-slate-800 text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">88%</span>
+            </div>
+            <div class="flex-1 bg-primary hover:bg-primary-container dark:bg-[#818cf8] rounded-t-lg h-[94%] transition-all relative group" title="Jul: 94%">
+              <span class="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-highest dark:bg-slate-800 text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">94%</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 4: ANALYTICS & INSIGHTS               -->
+      <!-- ========================================== -->
+      <section id="view-analytics" class="view-panel hidden relative z-10 flex flex-col gap-stack-lg">
+        
+        <div class="flex flex-col gap-1">
+          <h1 class="text-3xl md:text-4xl font-extrabold text-on-surface dark:text-white tracking-tight">Analytics & Trends</h1>
+          <p class="text-sm md:text-base text-on-surface-variant dark:text-slate-400">Deep insights into your productivity velocity, habit discipline, and long-term execution.</p>
+        </div>
+
+        <!-- Top Overview Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-stack-md">
+          <div class="bg-surface-container-lowest dark:bg-[#0e1626] p-6 rounded-2xl shadow-sm border border-outline-variant/30 dark:border-slate-800">
+            <span class="text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">Completion Velocity</span>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-3xl font-extrabold text-primary dark:text-[#818cf8]" id="analytics-completion-rate">84%</span>
+              <span class="text-xs font-bold text-secondary flex items-center gap-0.5">
+                <span class="material-symbols-outlined text-sm">trending_up</span> +8%
+              </span>
+            </div>
+            <p class="text-xs text-on-surface-variant dark:text-slate-400 mt-2">Higher than your 30-day average</p>
+          </div>
+
+          <div class="bg-surface-container-lowest dark:bg-[#0e1626] p-6 rounded-2xl shadow-sm border border-outline-variant/30 dark:border-slate-800">
+            <span class="text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">Peak Record Streak</span>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-3xl font-extrabold text-secondary dark:text-[#4edea3]" id="analytics-longest-streak">45 days</span>
+            </div>
+            <p class="text-xs text-on-surface-variant dark:text-slate-400 mt-2">Read 20 Pages (Personal Growth)</p>
+          </div>
+
+          <div class="bg-surface-container-lowest dark:bg-[#0e1626] p-6 rounded-2xl shadow-sm border border-outline-variant/30 dark:border-slate-800">
+            <span class="text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">Total Check-ins Logged</span>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-3xl font-extrabold text-on-surface dark:text-white" id="analytics-total-logs">184</span>
+            </div>
+            <p class="text-xs text-on-surface-variant dark:text-slate-400 mt-2">Across 6 routines tracked</p>
+          </div>
+        </div>
+
+        <!-- Leaderboard & Category Breakdown Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+          <!-- Streak Leaderboard (7 Cols) -->
+          <div class="lg:col-span-7 bg-surface-container-lowest dark:bg-[#0e1626] p-6 rounded-3xl shadow-sm border border-outline-variant/30 dark:border-slate-800">
+            <h3 class="text-lg font-bold text-on-surface dark:text-white mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">emoji_events</span> Streak Leaderboard
+            </h3>
+            <div class="flex flex-col gap-2.5" id="analytics-streak-leaderboard">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </div>
+
+          <!-- Category Momentum Distribution (5 Cols) -->
+          <div class="lg:col-span-5 bg-surface-container-lowest dark:bg-[#0e1626] p-6 rounded-3xl shadow-sm border border-outline-variant/30 dark:border-slate-800 flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-on-surface dark:text-white mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary">donut_large</span> Category Breakdown
+              </h3>
+              <div class="space-y-4">
+                <div>
+                  <div class="flex justify-between text-xs font-semibold mb-1">
+                    <span class="text-on-surface dark:text-slate-200">Health & Fitness</span>
+                    <span class="text-on-surface-variant">50%</span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div class="h-full bg-secondary rounded-full" style="width: 50%;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs font-semibold mb-1">
+                    <span class="text-on-surface dark:text-slate-200">Work & Productivity</span>
+                    <span class="text-on-surface-variant">25%</span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: 25%;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs font-semibold mb-1">
+                    <span class="text-on-surface dark:text-slate-200">Personal Growth</span>
+                    <span class="text-on-surface-variant">25%</span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div class="h-full bg-tertiary-container rounded-full" style="width: 25%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 rounded-2xl bg-surface-container-low dark:bg-slate-900/60 border border-outline-variant/20">
+              <p class="text-xs text-on-surface-variant dark:text-slate-400 leading-relaxed">
+                💡 <strong>Optimization Tip:</strong> You have highest consistency in morning health habits (92%). Consider scheduling deep work earlier in the day.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 5: SETTINGS & ACCOUNT                 -->
+      <!-- ========================================== -->
+      <section id="view-settings" class="view-panel hidden relative z-10 flex flex-col gap-stack-lg">
+        
+        <div class="flex flex-col gap-1">
+          <h1 class="text-3xl md:text-4xl font-extrabold text-on-surface dark:text-white tracking-tight">Settings & Preferences</h1>
+          <p class="text-sm md:text-base text-on-surface-variant dark:text-slate-400">Manage your profile, active categories, appearance, and backup data.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+          <!-- Sidebar anchors (Desktop) -->
+          <div class="lg:col-span-3">
+            <div class="sticky top-28 flex flex-col gap-1 bg-surface-container-lowest dark:bg-[#0e1626] p-2 rounded-2xl border border-outline-variant/30 dark:border-slate-800">
+              <a href="#section-profile" class="px-4 py-2.5 rounded-xl font-medium text-sm text-primary dark:text-[#818cf8] bg-primary-container/10 flex items-center justify-between">
+                <span>Profile & Theme</span>
+                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+              </a>
+              <a href="#section-categories" class="px-4 py-2.5 rounded-xl font-medium text-sm text-on-surface-variant dark:text-slate-400 hover:bg-surface-container-high dark:hover:bg-slate-800 flex items-center justify-between">
+                <span>Categories</span>
+                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+              </a>
+              <a href="#section-notifications" class="px-4 py-2.5 rounded-xl font-medium text-sm text-on-surface-variant dark:text-slate-400 hover:bg-surface-container-high dark:hover:bg-slate-800 flex items-center justify-between">
+                <span>Notifications</span>
+                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+              </a>
+              <a href="#section-data" class="px-4 py-2.5 rounded-xl font-medium text-sm text-on-surface-variant dark:text-slate-400 hover:bg-surface-container-high dark:hover:bg-slate-800 flex items-center justify-between">
+                <span>Data Management</span>
+                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Settings Sections Content (9 cols) -->
+          <div class="lg:col-span-9 flex flex-col gap-stack-lg">
+            
+            <!-- Profile & Theme Section -->
+            <section id="section-profile" class="bg-surface-container-lowest dark:bg-[#0e1626] rounded-3xl p-6 md:p-stack-lg shadow-sm border border-outline-variant/30 dark:border-slate-800">
+              <div class="flex items-center gap-3 mb-6">
+                <span class="material-symbols-outlined text-primary text-[28px]">person</span>
+                <h2 class="text-xl font-bold text-on-surface dark:text-white">Profile & Appearance</h2>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+                <!-- User Details -->
+                <div class="flex flex-col gap-4">
+                  <div class="flex items-center gap-4">
+                    <div class="relative">
+                      <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-primary to-primary-container text-on-primary font-bold text-2xl flex items-center justify-center shadow-md">
+                        AM
+                      </div>
+                    </div>
+                    <div>
+                      <h4 class="text-lg font-bold text-on-surface dark:text-white" id="settings-profile-name-display">Alex Mercer</h4>
+                      <p class="text-sm text-on-surface-variant dark:text-slate-400" id="settings-profile-email">alex.mercer@momentum.app</p>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-1.5 mt-2">
+                    <label class="text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">Display Name</label>
+                    <input type="text" id="settings-profile-name" class="w-full bg-surface-container-low dark:bg-[#090d16] text-on-surface dark:text-white px-4 py-2.5 rounded-xl border border-outline-variant/40 dark:border-slate-700 outline-none focus:border-primary transition-all">
+                  </div>
+                </div>
+
+                <!-- Theme Selection -->
+                <div class="flex flex-col gap-3 justify-center bg-surface-container-low dark:bg-slate-900/60 p-5 rounded-2xl border border-outline-variant/20 dark:border-slate-800">
+                  <h3 class="text-sm font-bold text-on-surface dark:text-white uppercase tracking-wider">Appearance Theme</h3>
+                  
+                  <div onclick="store.setTheme('light')" class="flex items-center justify-between p-3 rounded-xl hover:bg-surface-container dark:hover:bg-slate-800 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-2.5">
+                      <span class="material-symbols-outlined text-on-surface-variant dark:text-slate-300">light_mode</span>
+                      <span class="text-sm font-medium text-on-surface dark:text-slate-200">Light Mode</span>
+                    </div>
+                    <div id="theme-radio-light" class="w-6 h-6 rounded-full border-2 border-primary flex items-center justify-center">
+                      <div class="w-3 h-3 rounded-full bg-primary"></div>
+                    </div>
+                  </div>
+
+                  <div onclick="store.setTheme('dark')" class="flex items-center justify-between p-3 rounded-xl hover:bg-surface-container dark:hover:bg-slate-800 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-2.5">
+                      <span class="material-symbols-outlined text-on-surface-variant dark:text-slate-300">dark_mode</span>
+                      <span class="text-sm font-medium text-on-surface dark:text-slate-200">Dark Mode</span>
+                    </div>
+                    <div id="theme-radio-dark" class="w-6 h-6 rounded-full border-2 border-outline-variant flex items-center justify-center"></div>
+                  </div>
+
+                  <div onclick="store.setTheme('system')" class="flex items-center justify-between p-3 rounded-xl hover:bg-surface-container dark:hover:bg-slate-800 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-2.5">
+                      <span class="material-symbols-outlined text-on-surface-variant dark:text-slate-300">desktop_windows</span>
+                      <span class="text-sm font-medium text-on-surface dark:text-slate-200">System Default</span>
+                    </div>
+                    <div id="theme-radio-system" class="w-6 h-6 rounded-full border-2 border-outline-variant flex items-center justify-center"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Categories Section -->
+            <section id="section-categories" class="bg-surface-container-lowest dark:bg-[#0e1626] rounded-3xl p-6 md:p-stack-lg shadow-sm border border-outline-variant/30 dark:border-slate-800">
+              <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-secondary text-[28px]">label</span>
+                  <h2 class="text-xl font-bold text-on-surface dark:text-white">Categories</h2>
+                </div>
+                <button onclick="openNewCategoryModal()" class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 hover:opacity-90 transition-opacity shadow-sm">
+                  <span class="material-symbols-outlined text-[16px]">add</span> New Category
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-stack-md" id="settings-categories-grid">
+                <!-- Rendered dynamically by app.js -->
+              </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section id="section-notifications" class="bg-surface-container-lowest dark:bg-[#0e1626] rounded-3xl p-6 md:p-stack-lg shadow-sm border border-outline-variant/30 dark:border-slate-800">
+              <div class="flex items-center gap-3 mb-6">
+                <span class="material-symbols-outlined text-primary text-[28px]">notifications</span>
+                <h2 class="text-xl font-bold text-on-surface dark:text-white">Notification Preferences</h2>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                <div class="flex items-center justify-between p-4 bg-surface-container-low dark:bg-slate-900/60 rounded-2xl">
+                  <div>
+                    <h4 class="font-semibold text-sm text-on-surface dark:text-white">Daily Summary</h4>
+                    <p class="text-xs text-on-surface-variant dark:text-slate-400">Receive a morning digest of today's targets.</p>
+                  </div>
+                  <div id="toggle-notif-daily" onclick="store.data.profile.notifications.dailySummary = !store.data.profile.notifications.dailySummary; store.save();" class="relative w-12 h-6 bg-primary rounded-full cursor-pointer shadow-inner">
+                    <div class="toggle-thumb absolute right-1 top-1 w-4 h-4 bg-on-primary rounded-full shadow-sm transition-transform"></div>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between p-4 bg-surface-container-low dark:bg-slate-900/60 rounded-2xl">
+                  <div>
+                    <h4 class="font-semibold text-sm text-on-surface dark:text-white">Habit Reminders</h4>
+                    <p class="text-xs text-on-surface-variant dark:text-slate-400">Push notifications for scheduled habits.</p>
+                  </div>
+                  <div id="toggle-notif-reminders" onclick="store.data.profile.notifications.habitReminders = !store.data.profile.notifications.habitReminders; store.save();" class="relative w-12 h-6 bg-primary rounded-full cursor-pointer shadow-inner">
+                    <div class="toggle-thumb absolute right-1 top-1 w-4 h-4 bg-on-primary rounded-full shadow-sm transition-transform"></div>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between p-4 bg-surface-container-low dark:bg-slate-900/60 rounded-2xl">
+                  <div>
+                    <h4 class="font-semibold text-sm text-on-surface dark:text-white">Streak Warnings</h4>
+                    <p class="text-xs text-on-surface-variant dark:text-slate-400">Alerts when an active streak is at risk of breaking.</p>
+                  </div>
+                  <div id="toggle-notif-warnings" onclick="store.data.profile.notifications.streakWarnings = !store.data.profile.notifications.streakWarnings; store.save();" class="relative w-12 h-6 bg-outline-variant rounded-full cursor-pointer shadow-inner">
+                    <div class="toggle-thumb absolute left-1 top-1 w-4 h-4 bg-surface rounded-full shadow-sm transition-transform"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Data Management Section -->
+            <section id="section-data" class="bg-surface-container-lowest dark:bg-[#0e1626] rounded-3xl p-6 md:p-stack-lg shadow-sm border border-outline-variant/30 dark:border-slate-800">
+              <div class="flex items-center gap-3 mb-6">
+                <span class="material-symbols-outlined text-primary text-[28px]">database</span>
+                <h2 class="text-xl font-bold text-on-surface dark:text-white">Data Management & Backup</h2>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-stack-md mb-6">
+                <button onclick="exportDataJSON()" class="p-4 rounded-2xl bg-surface-container-low dark:bg-slate-900/60 hover:bg-surface-container-high dark:hover:bg-slate-800 transition-colors text-primary dark:text-[#818cf8] font-semibold text-sm flex items-center justify-center gap-2 border border-primary/20">
+                  <span class="material-symbols-outlined">download</span> Export Data (JSON)
+                </button>
+                <label class="p-4 rounded-2xl bg-surface-container-low dark:bg-slate-900/60 hover:bg-surface-container-high dark:hover:bg-slate-800 transition-colors text-on-surface dark:text-white font-semibold text-sm flex items-center justify-center gap-2 border border-outline-variant/30 dark:border-slate-700 cursor-pointer">
+                  <span class="material-symbols-outlined">upload</span> Import Data (JSON)
+                  <input type="file" accept=".json" onchange="importDataJSON(event)" class="hidden">
+                </label>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-error-container/40 dark:bg-red-950/30 border border-error/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h4 class="font-bold text-sm text-error dark:text-red-400 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[18px]">warning</span> Danger Zone
+                  </h4>
+                  <p class="text-xs text-on-error-container dark:text-red-300 mt-1">Permanently reset all habits, targets, and streaks to original factory defaults.</p>
+                </div>
+                <button onclick="resetAllDataConfirm()" class="px-5 py-2.5 bg-error text-on-error rounded-xl text-xs font-bold hover:bg-red-700 transition-colors shrink-0 shadow-sm">
+                  Reset All Progress
+                </button>
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- MODALS CONTAINER                                        -->
+  <!-- ======================================================= -->
+
+  <!-- Modal: Create New Habit -->
+  <div id="modal-new-habit" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="modal-content-box bg-surface-container-lowest dark:bg-[#0e1626] w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-stack-lg border border-outline-variant/30 dark:border-slate-800 transform scale-95 transition-transform duration-200">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-2xl font-bold text-on-surface dark:text-white">Create New Habit</h3>
+        <button onclick="closeModal('modal-new-habit')" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container dark:hover:bg-slate-800">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="new-habit-form" class="flex flex-col gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Habit Name *</label>
+          <input id="modal-habit-name" type="text" required placeholder="e.g., Morning 20min Run" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Category</label>
+            <select id="modal-habit-category" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Frequency</label>
+            <select id="modal-habit-frequency" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+              <option value="daily">Daily</option>
+              <option value="weekdays">Weekdays</option>
+              <option value="3x / Week">3x / Week</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Target Goal (Optional)</label>
+            <input id="modal-habit-target-val" type="number" placeholder="e.g. 20" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Unit</label>
+            <input id="modal-habit-target-unit" type="text" placeholder="mins, pages, L" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Scheduled Time (Optional)</label>
+          <input id="modal-habit-time" type="text" placeholder="e.g., 07:00 AM, Evening" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+        </div>
+
+        <div class="flex justify-end gap-2.5 mt-4 pt-4 border-t border-outline-variant/20">
+          <button type="button" onclick="closeModal('modal-new-habit')" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-slate-800">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary hover:bg-primary-container text-on-primary shadow-sm">Save Habit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Edit Habit -->
+  <div id="modal-edit-habit" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="modal-content-box bg-surface-container-lowest dark:bg-[#0e1626] w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-stack-lg border border-outline-variant/30 dark:border-slate-800 transform scale-95 transition-transform duration-200">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-2xl font-bold text-on-surface dark:text-white">Edit Habit</h3>
+        <button onclick="closeModal('modal-edit-habit')" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container dark:hover:bg-slate-800">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="edit-habit-form" class="flex flex-col gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Habit Name</label>
+          <input id="edit-habit-name" type="text" required class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Category</label>
+            <select id="edit-habit-category" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Frequency</label>
+            <select id="edit-habit-freq" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+              <option value="daily">Daily</option>
+              <option value="weekdays">Weekdays</option>
+              <option value="3x / Week">3x / Week</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Target Value</label>
+            <input id="edit-habit-val" type="number" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Unit</label>
+            <input id="edit-habit-unit" type="text" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Scheduled Time</label>
+          <input id="edit-habit-time" type="text" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+        </div>
+
+        <div class="flex justify-end gap-2.5 mt-4 pt-4 border-t border-outline-variant/20">
+          <button type="button" onclick="closeModal('modal-edit-habit')" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-slate-800">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary hover:bg-primary-container text-on-primary shadow-sm">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Create New Target -->
+  <div id="modal-new-target" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="modal-content-box bg-surface-container-lowest dark:bg-[#0e1626] w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-stack-lg border border-outline-variant/30 dark:border-slate-800 transform scale-95 transition-transform duration-200">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-2xl font-bold text-on-surface dark:text-white">Create New Target</h3>
+        <button onclick="closeModal('modal-new-target')" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container dark:hover:bg-slate-800">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="new-target-form" class="flex flex-col gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Target Title *</label>
+          <input id="modal-target-title" type="text" required placeholder="e.g., Save $10,000" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Category</label>
+            <select id="modal-target-category" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Deadline Date *</label>
+            <input id="modal-target-deadline" type="date" required value="2026-11-30" class="w-full px-4 py-2 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Current</label>
+            <input id="modal-target-start" type="number" value="0" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Goal *</label>
+            <input id="modal-target-goal" type="number" required placeholder="100" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Unit</label>
+            <input id="modal-target-unit" type="text" placeholder="km, $, hrs" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Theme Accent</label>
+          <select id="modal-target-accent" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+            <option value="primary">Indigo (Standard)</option>
+            <option value="secondary">Emerald (Health & Fitness)</option>
+            <option value="tertiary">Amber (Business / Finance)</option>
+            <option value="error">Ruby (Critical)</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end gap-2.5 mt-4 pt-4 border-t border-outline-variant/20">
+          <button type="button" onclick="closeModal('modal-new-target')" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-slate-800">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary hover:bg-primary-container text-on-primary shadow-sm">Create Target</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Edit Target -->
+  <div id="modal-edit-target" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="modal-content-box bg-surface-container-lowest dark:bg-[#0e1626] w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-stack-lg border border-outline-variant/30 dark:border-slate-800 transform scale-95 transition-transform duration-200">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-2xl font-bold text-on-surface dark:text-white">Edit Target</h3>
+        <button onclick="closeModal('modal-edit-target')" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container dark:hover:bg-slate-800">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="edit-target-form" class="flex flex-col gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Target Title</label>
+          <input id="edit-target-title" type="text" required class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Category</label>
+            <select id="edit-target-category" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Deadline Date</label>
+            <input id="edit-target-deadline" type="date" required class="w-full px-4 py-2 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Current</label>
+            <input id="edit-target-current" type="number" required class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Goal</label>
+            <input id="edit-target-target" type="number" required class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Unit</label>
+            <input id="edit-target-unit" type="text" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Theme Accent</label>
+          <select id="edit-target-accent" class="w-full px-4 py-2.5 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+            <option value="primary">Indigo (Standard)</option>
+            <option value="secondary">Emerald (Health & Fitness)</option>
+            <option value="tertiary">Amber (Business / Finance)</option>
+            <option value="error">Ruby (Critical)</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end gap-2.5 mt-4 pt-4 border-t border-outline-variant/20">
+          <button type="button" onclick="closeModal('modal-edit-target')" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-slate-800">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary hover:bg-primary-container text-on-primary shadow-sm">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Quick Log Target Progress -->
+  <div id="modal-log-progress" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="modal-content-box bg-surface-container-lowest dark:bg-[#0e1626] w-full max-w-sm rounded-3xl shadow-2xl p-6 border border-outline-variant/30 dark:border-slate-800 transform scale-95 transition-transform duration-200 text-center">
+      <div class="w-12 h-12 rounded-full bg-primary/15 text-primary mx-auto flex items-center justify-center mb-3">
+        <span class="material-symbols-outlined text-[24px]">add_task</span>
+      </div>
+      <h3 class="text-xl font-bold text-on-surface dark:text-white" id="log-progress-title">Log Progress</h3>
+      <p class="text-xs text-on-surface-variant dark:text-slate-400 mt-1 mb-5">Add increments toward your target milestone.</p>
+
+      <form id="log-progress-form" class="flex flex-col gap-4">
+        <div class="flex items-center justify-center gap-3">
+          <button type="button" onclick="document.getElementById('log-progress-input').value = Math.max(1, Number(document.getElementById('log-progress-input').value) - 1)" class="w-10 h-10 rounded-xl bg-surface-container dark:bg-slate-800 text-lg font-bold text-on-surface dark:text-white hover:bg-surface-container-high">-</button>
+          <input id="log-progress-input" type="number" step="any" value="1" class="w-24 text-center text-2xl font-extrabold px-3 py-2 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-primary dark:text-[#818cf8]">
+          <button type="button" onclick="document.getElementById('log-progress-input').value = Number(document.getElementById('log-progress-input').value) + 1" class="w-10 h-10 rounded-xl bg-surface-container dark:bg-slate-800 text-lg font-bold text-on-surface dark:text-white hover:bg-surface-container-high">+</button>
+        </div>
+        <span class="text-xs font-semibold text-on-surface-variant dark:text-slate-400" id="log-progress-unit-label">units</span>
+
+        <div class="flex gap-2 mt-4">
+          <button type="button" onclick="closeModal('modal-log-progress')" class="flex-1 py-2.5 rounded-xl text-xs font-semibold text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-slate-800">Cancel</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-primary hover:bg-primary-container text-on-primary shadow-sm">Save Entry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Create New Category -->
+  <div id="modal-new-category" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="modal-content-box bg-surface-container-lowest dark:bg-[#0e1626] w-full max-w-sm rounded-3xl shadow-2xl p-6 border border-outline-variant/30 dark:border-slate-800 transform scale-95 transition-transform duration-200">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-on-surface dark:text-white">Add Category</h3>
+        <button onclick="closeModal('modal-new-category')" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container dark:hover:bg-slate-800">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="new-category-form" class="flex flex-col gap-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Category Name</label>
+          <input id="modal-cat-name" type="text" required placeholder="e.g. Finance, Creativity" class="w-full px-4 py-2 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Icon Name (Material Symbols)</label>
+          <input id="modal-cat-icon" type="text" value="star" placeholder="e.g., payments, psychology, brush" class="w-full px-4 py-2 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-on-surface-variant dark:text-slate-400 uppercase mb-1">Color Palette</label>
+          <select id="modal-cat-color" class="w-full px-4 py-2 rounded-xl bg-surface-container-low dark:bg-[#090d16] border border-outline-variant/40 dark:border-slate-700 text-on-surface dark:text-white outline-none focus:border-primary">
+            <option value="primary">Indigo</option>
+            <option value="secondary">Emerald</option>
+            <option value="tertiary">Amber</option>
+          </select>
+        </div>
+
+        <div class="flex justify-end gap-2 mt-4 pt-3 border-t border-outline-variant/20">
+          <button type="button" onclick="closeModal('modal-new-category')" class="px-4 py-2 rounded-xl text-xs font-semibold text-on-surface-variant hover:bg-surface-container dark:hover:bg-slate-800">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-primary text-on-primary">Save Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
