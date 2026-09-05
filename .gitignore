@@ -1,14 +1,19 @@
-# Operating System Files
+# Dependencies & Build
+node_modules/
+.vscode/
+.idea/
+
+# OS Files
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# IDE & Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Temporary / Scratch
-.gemini/
+# Logs & Scratch
 *.log
+scratch/
+.system_generated/
+*.zip
+
+# Reference Design Mockups (local only)
+market analysis/
+stitch_momentum_habit_tracker/

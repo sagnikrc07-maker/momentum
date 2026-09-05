@@ -14,7 +14,8 @@
 - **📊 Analytics & Velocity Trends**: Daily completion rates, longest streak record trackers, and category distribution breakdown.
 - **🌓 Adaptive Appearance (Dark & Light Mode)**: Full support for Light, Dark, and System Default themes with custom Kinetic Precision tokens.
 - **📂 Category Management**: Organize habits across *Health*, *Work*, *Personal*, *Learning*, or custom categories with custom icons.
-- **💾 Local Persistence & Data Portability**: Instant saving to `localStorage` with full **JSON Data Export** and **JSON Data Import** backup support.
+- **📱 Mobile Responsive & Bottom Navigation**: Sleek mobile bottom navigation bar with a centered floating action button (FAB) for instant one-tap habit creation.
+- **☁️ Supabase Cloud Sync & Authentication**: Real-time cloud synchronization, secure authentication, and multi-device persistence powered by Supabase PostgreSQL.
 
 ---
 
