@@ -33,9 +33,6 @@
           <img src="assets/logo.png" alt="Momentum Logo" class="brand-logo-img">
           <span class="brand-title">Momentum</span>
         </a>
-        <button class="icon-btn mobile-sidebar-close" id="sidebarCloseBtn" aria-label="Close navigation" title="Close menu">
-          <span class="material-symbols-outlined">close</span>
-        </button>
       </div>
 
       <nav class="sidebar-nav">
@@ -66,7 +63,7 @@
       <div class="sidebar-footer">
         <div class="quick-streak-card">
           <div class="quick-streak-info">
-            <span class="quick-streak-label">Global Streak</span>
+            <span class="quick-streak-label">Personal Streak</span>
             <span class="quick-streak-value" id="sidebarStreakVal">14 Days</span>
           </div>
           <span class="material-symbols-outlined" style="color: var(--secondary); font-size: 26px;">local_fire_department</span>
@@ -365,14 +362,14 @@
                 <span class="stat-card-sub"><span class="material-symbols-outlined" style="font-size: 16px;">verified</span> Top tier pace</span>
               </div>
               <div class="stat-card-elevated">
-                <span class="stat-card-title">Current Global Streak</span>
-                <span class="stat-card-val" id="analyticsGlobalStreak">14 Days</span>
-                <span class="stat-card-sub"><span class="material-symbols-outlined" style="font-size: 16px;">local_fire_department</span> Active &amp; healthy</span>
+                <span class="stat-card-title">Current Personal Streak</span>
+                <span class="stat-card-val" id="analyticsPersonalStreak">14 Days</span>
+                <span class="stat-card-sub" style="color: var(--secondary);"><span class="material-symbols-outlined" style="font-size: 16px;">local_fire_department</span> Active &amp; healthy</span>
               </div>
               <div class="stat-card-elevated">
                 <span class="stat-card-title">All-Time Best Streak</span>
                 <span class="stat-card-val" id="analyticsBestStreak">42 Days</span>
-                <span class="stat-card-sub" style="color: var(--primary);"><span class="material-symbols-outlined" style="font-size: 16px;">award_star</span> Drink 2L Water</span>
+                <span class="stat-card-sub" id="analyticsBestHabitSub" style="color: var(--primary);"><span class="material-symbols-outlined" style="font-size: 16px;">award_star</span> Drink 2L Water</span>
               </div>
             </div>
 
@@ -382,10 +379,22 @@
               <div class="chart-box-card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                   <h3 style="font-size: 18px; font-weight: 700; color: var(--on-surface);">30-Day Consistency Grid</h3>
-                  <span style="font-size: 12px; font-weight: 600; color: var(--on-surface-variant);">Past 4 Weeks</span>
+                  <span style="font-size: 12px; font-weight: 600; color: var(--on-surface-variant);" id="thirtyDaySubtitle">Past 30 Days</span>
                 </div>
-                <div id="thirtyDayGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;">
+                <div class="thirty-day-weekday-headers" id="thirtyDayWeekdayHeaders">
+                  <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                </div>
+                <div id="thirtyDayGrid" class="thirty-day-grid">
                   <!-- Dynamically populated -->
+                </div>
+                <div class="thirty-day-legend">
+                  <span style="font-size: 11px; color: var(--on-surface-variant); font-weight: 500;">Less</span>
+                  <div class="legend-cell" style="background: var(--surface-container-high);"></div>
+                  <div class="legend-cell cell-green-20"></div>
+                  <div class="legend-cell cell-green-60"></div>
+                  <div class="legend-cell cell-green-80"></div>
+                  <div class="legend-cell cell-green-100"></div>
+                  <span style="font-size: 11px; color: var(--on-surface-variant); font-weight: 500;">More</span>
                 </div>
               </div>
 

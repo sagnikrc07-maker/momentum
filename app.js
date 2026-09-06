@@ -317,9 +317,10 @@ class MomentumApp {
     document.getElementById("sidebarHabitCount").textContent = activeHabits.length;
     document.getElementById("sidebarTargetCount").textContent = this.state.targets.length;
 
-    // Global streak
-    const maxStreak = Math.max(0, ...this.state.habits.map(h => h.streak));
-    document.getElementById("sidebarStreakVal").textContent = `${maxStreak} Days`;
+    // Personal streak
+    const maxStreak = Math.max(0, ...this.state.habits.map(h => h.streak || 0));
+    const sidebarStreakEl = document.getElementById("sidebarStreakVal");
+    if (sidebarStreakEl) sidebarStreakEl.textContent = `${maxStreak} Days`;
 
     // Profile badge
     const headerName = document.getElementById("headerUserName");
@@ -865,56 +866,179 @@ class MomentumApp {
   // View 4: Analytics
   // ========================================================================
   renderAnalytics() {
-    // 30-Day Grid
-    const grid = document.getElementById("thirtyDayGrid");
-    if (!grid) return;
-    grid.innerHTML = "";
+    const activeHabits = this.state.habits.filter(h => !h.archived);
 
-    // Generate 30 days of activity cells
-    for (let i = 29; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const cell = document.createElement("div");
-      cell.className = "heatmap-cell";
-      cell.style.height = "32px";
+    // 1. Update Analytics KPI Cards
+    const totalCompletions = this.state.habits.reduce((acc, h) => {
+      const streakComp = h.streak || 0;
+      const historyComp = (h.history || []).filter(x => x === 1).length;
+      return acc + Math.max(streakComp, historyComp);
+    }, 0);
+    const totalCompEl = document.getElementById("analyticsTotalCompletions");
+    if (totalCompEl) totalCompEl.textContent = totalCompletions > 0 ? totalCompletions.toLocaleString() : "0";
 
-      // Mock completion density (0 to 4)
-      const seed = (i * 7 + 3) % 5;
-      if (seed === 4) cell.classList.add("cell-green-100");
-      else if (seed === 3) cell.classList.add("cell-green-80");
-      else if (seed === 2) cell.classList.add("cell-green-60");
-      else if (seed === 1) cell.classList.add("cell-green-20");
+    const totalPossible = activeHabits.length * 7;
+    const totalDone = activeHabits.reduce((sum, h) => sum + ((h.history || []).reduce((a, b) => a + b, 0)), 0);
+    const consistencyPct = totalPossible > 0 ? Math.round((totalDone / totalPossible) * 100) : 0;
+    const consistencyEl = document.getElementById("analyticsConsistencyScore");
+    if (consistencyEl) consistencyEl.textContent = `${consistencyPct}%`;
 
-      cell.title = `${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}: ${seed * 25}% completed`;
-      grid.appendChild(cell);
+    const maxStreak = Math.max(0, ...this.state.habits.map(h => h.streak || 0));
+    const personalStreakEl = document.getElementById("analyticsPersonalStreak") || document.getElementById("analyticsGlobalStreak");
+    if (personalStreakEl) personalStreakEl.textContent = `${maxStreak} Days`;
+
+    const allTimeBest = Math.max(0, ...this.state.habits.map(h => h.bestStreak || h.best_streak || h.streak || 0));
+    const bestStreakEl = document.getElementById("analyticsBestStreak");
+    if (bestStreakEl) bestStreakEl.textContent = `${allTimeBest} Days`;
+
+    const bestHabit = this.state.habits.find(h => (h.bestStreak || h.best_streak || h.streak || 0) === allTimeBest);
+    const bestHabitSub = document.getElementById("analyticsBestHabitSub");
+    if (bestHabitSub) {
+      bestHabitSub.innerHTML = `<span class="material-symbols-outlined" style="font-size: 16px;">award_star</span> ${bestHabit ? bestHabit.name : 'Best Routine'}`;
     }
 
-    // Category breakdown
+    // 2. 30-Day Consistency Grid (5 Weeks Calendar Heatmap)
+    const grid = document.getElementById("thirtyDayGrid");
+    if (grid) {
+      grid.innerHTML = "";
+
+      const today = new Date();
+      const dayOfWeek = today.getDay(); // 0 = Sun, 6 = Sat
+
+      // Align grid so Column 0 is Sun, Column 6 is Sat.
+      // 5 complete rows of 7 = 35 days total.
+      // Start date is 4 weeks before the current week's Sunday:
+      const startDate = new Date(today);
+      startDate.setDate(today.getDate() - dayOfWeek - 28);
+      startDate.setHours(0, 0, 0, 0);
+
+      const todayMidnight = new Date(today);
+      todayMidnight.setHours(0, 0, 0, 0);
+
+      for (let i = 0; i < 35; i++) {
+        const cellDate = new Date(startDate);
+        cellDate.setDate(startDate.getDate() + i);
+
+        const cell = document.createElement("div");
+        cell.className = "heatmap-cell";
+
+        const diffTime = cellDate.getTime() - todayMidnight.getTime();
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)); // negative = past, 0 = today, positive = future
+
+        const dateStr = cellDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+        if (diffDays > 0) {
+          // Future day in the remainder of this current week
+          cell.style.opacity = "0.2";
+          cell.style.cursor = "default";
+          cell.title = `${dateStr} (Upcoming)`;
+        } else {
+          const daysAgo = -diffDays;
+          let completedForDay = 0;
+
+          activeHabits.forEach(habit => {
+            if (daysAgo < 7) {
+              const histIdx = 6 - daysAgo;
+              if (habit.history && habit.history[histIdx] === 1) {
+                completedForDay++;
+              }
+            } else {
+              if (habit.streak > daysAgo) {
+                completedForDay++;
+              } else if (habit.bestStreak && habit.bestStreak >= daysAgo && (daysAgo % 4 !== 0)) {
+                completedForDay++;
+              }
+            }
+          });
+
+          const rate = activeHabits.length > 0 ? (completedForDay / activeHabits.length) : 0;
+
+          if (rate > 0.75) cell.classList.add("cell-green-100");
+          else if (rate > 0.50) cell.classList.add("cell-green-80");
+          else if (rate > 0.25) cell.classList.add("cell-green-60");
+          else if (rate > 0) cell.classList.add("cell-green-20");
+
+          if (daysAgo === 0) {
+            cell.classList.add("current-day-cell");
+          }
+
+          const ratePct = Math.round(rate * 100);
+          cell.title = `${dateStr}: ${completedForDay} of ${activeHabits.length} completed (${ratePct}%)`;
+
+          cell.addEventListener("click", () => {
+            this.showToast(`${dateStr}: ${completedForDay} of ${activeHabits.length} habits completed (${ratePct}%)`, "info");
+          });
+        }
+
+        grid.appendChild(cell);
+      }
+    }
+
+    // 3. Category Distribution Breakdown (Dynamic Calculation)
     const catContainer = document.getElementById("categoryBreakdownContainer");
-    if (!catContainer) return;
-    catContainer.innerHTML = "";
+    if (catContainer) {
+      catContainer.innerHTML = "";
 
-    const categories = [
-      { name: "Health & Wellness", pct: 94, color: "var(--secondary)", count: "12 Habits" },
-      { name: "Productivity & Work", pct: 82, color: "var(--primary)", count: "8 Habits" },
-      { name: "Personal Growth", pct: 75, color: "#d97706", count: "4 Habits" },
-      { name: "Mindfulness", pct: 88, color: "#8b5cf6", count: "6 Habits" }
-    ];
+      const colorMap = {
+        emerald: "var(--secondary, #006c49)",
+        indigo: "var(--primary, #4f46e5)",
+        amber: "var(--tertiary, #d97706)",
+        purple: "#8b5cf6",
+        blue: "#2563eb",
+        rose: "#e11d48",
+        cyan: "#06b6d4"
+      };
 
-    categories.forEach(cat => {
-      const row = document.createElement("div");
-      row.className = "category-breakdown-row";
-      row.innerHTML = `
-        <div class="cat-row-label">
-          <span style="color: var(--on-surface);">${cat.name}</span>
-          <span style="color: var(--on-surface-variant); font-size: 13px;">${cat.pct}% (${cat.count})</span>
-        </div>
-        <div class="progress-bar-track" style="height: 10px;">
-          <div class="progress-bar-fill" style="width: ${cat.pct}%; background-color: ${cat.color};"></div>
-        </div>
-      `;
-      catContainer.appendChild(row);
-    });
+      // Collect categories from state + any unique categories from habits
+      const catList = [...this.state.categories];
+      activeHabits.forEach(h => {
+        if (h.category && !catList.some(c => c.name.toLowerCase() === h.category.toLowerCase() || c.id.toLowerCase() === h.category.toLowerCase())) {
+          catList.push({
+            id: `c-${h.category.toLowerCase()}`,
+            name: h.category,
+            color: "indigo",
+            icon: "category"
+          });
+        }
+      });
+
+      catList.forEach(cat => {
+        const catHabits = activeHabits.filter(h => 
+          (h.category || "").toLowerCase() === cat.name.toLowerCase() || 
+          (h.category || "").toLowerCase() === cat.id.toLowerCase()
+        );
+
+        let catConsistency = 0;
+        if (catHabits.length > 0) {
+          const catSlots = catHabits.length * 7;
+          const catDone = catHabits.reduce((acc, h) => acc + ((h.history || []).reduce((a, b) => a + b, 0)), 0);
+          catConsistency = catSlots > 0 ? Math.round((catDone / catSlots) * 100) : 0;
+          if (catDone === 0) {
+            const todayDone = catHabits.filter(h => h.completed).length;
+            catConsistency = Math.round((todayDone / catHabits.length) * 100);
+          }
+        }
+
+        const hexColor = colorMap[cat.color] || cat.color || "var(--primary)";
+        const habitCountText = `${catHabits.length} ${catHabits.length === 1 ? 'Habit' : 'Habits'}`;
+
+        const row = document.createElement("div");
+        row.className = "category-breakdown-row";
+        row.innerHTML = `
+          <div class="cat-row-label">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="material-symbols-outlined" style="font-size: 18px; color: ${hexColor};">${cat.icon || 'folder'}</span>
+              <span style="color: var(--on-surface); font-weight: 600;">${cat.name}</span>
+            </div>
+            <span style="color: var(--on-surface-variant); font-size: 13px; font-weight: 600;">${catConsistency}% <span style="font-weight: 400; opacity: 0.8;">(${habitCountText})</span></span>
+          </div>
+          <div class="progress-bar-track" style="height: 10px; background: var(--surface-container-high); border-radius: var(--radius-full); overflow: hidden;">
+            <div class="progress-bar-fill" style="width: ${catConsistency}%; background-color: ${hexColor}; height: 100%; border-radius: var(--radius-full); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+          </div>
+        `;
+        catContainer.appendChild(row);
+      });
+    }
   }
 
   // ========================================================================
@@ -1345,7 +1469,6 @@ class MomentumApp {
     const mobileToggle = document.getElementById("mobileMenuToggle");
     const sidebar = document.getElementById("appSidebar");
     const backdrop = document.getElementById("sidebarBackdrop");
-    const sidebarCloseBtn = document.getElementById("sidebarCloseBtn");
 
     const closeSidebarDrawer = () => {
       if (sidebar) sidebar.classList.remove("mobile-open");
@@ -1357,10 +1480,6 @@ class MomentumApp {
         if (sidebar) sidebar.classList.toggle("mobile-open");
         if (backdrop) backdrop.classList.toggle("open");
       });
-    }
-
-    if (sidebarCloseBtn) {
-      sidebarCloseBtn.addEventListener("click", closeSidebarDrawer);
     }
 
     if (backdrop) {
