@@ -1,11 +1,14 @@
 /**
  * Supabase Backend Client & Database Layer for Momentum
- * Connected to Project: sagnikrc07-maker's Project (yagvczdnfyhdtvggkclj)
+ * 
+ * Supports configuration via window.MOMENTUM_SUPABASE_URL & window.MOMENTUM_SUPABASE_KEY
+ * (e.g., loaded from a gitignored config.js).
+ * When unconfigured, Momentum operates seamlessly in Offline / Guest Mode.
  */
 
 const SUPABASE_CONFIG = {
-  url: "https://yagvczdnfyhdtvggkclj.supabase.co",
-  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhZ3ZjemRuZnloZHR2Z2drY2xqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwODM2MDcsImV4cCI6MjEwMzY1OTYwN30.VsaIdEh9PZGdFfVuJy1KMAISkl8yhRepxAXNGGMxibA"
+  url: (typeof window !== "undefined" && window.MOMENTUM_SUPABASE_URL) || "",
+  anonKey: (typeof window !== "undefined" && window.MOMENTUM_SUPABASE_KEY) || ""
 };
 
 class MomentumSupabaseClient {
@@ -16,17 +19,36 @@ class MomentumSupabaseClient {
     this.init();
   }
 
+  isConfigured() {
+    return !!(
+      SUPABASE_CONFIG.url &&
+      SUPABASE_CONFIG.anonKey &&
+      typeof SUPABASE_CONFIG.url === "string" &&
+      SUPABASE_CONFIG.url.startsWith("https://") &&
+      !SUPABASE_CONFIG.url.includes("your-project-ref") &&
+      !SUPABASE_CONFIG.anonKey.includes("your-anon-key")
+    );
+  }
+
   init() {
-    if (window.supabase && typeof window.supabase.createClient === "function") {
-      this.client = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-    } else {
-      console.warn("Supabase SDK not yet loaded in window.");
+    if (this.isConfigured() && window.supabase && typeof window.supabase.createClient === "function") {
+      try {
+        this.client = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+      } catch (e) {
+        console.warn("Could not initialize Supabase client:", e);
+        this.client = null;
+      }
     }
   }
 
   getClient() {
-    if (!this.client && window.supabase && typeof window.supabase.createClient === "function") {
-      this.client = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+    if (!this.client && this.isConfigured() && window.supabase && typeof window.supabase.createClient === "function") {
+      try {
+        this.client = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+      } catch (e) {
+        console.warn("Could not retrieve Supabase client:", e);
+        this.client = null;
+      }
     }
     return this.client;
   }

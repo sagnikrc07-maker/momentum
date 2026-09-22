@@ -15,6 +15,10 @@
   <!-- Material Symbols Outlined -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
+  <!-- Security & Privacy Policies -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co;">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
   <!-- Core Design System -->
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -466,11 +470,11 @@
                       <div style="flex: 1; display: flex; flex-direction: column; gap: 14px;">
                         <div class="form-group">
                           <label class="form-label" for="profileNameInput">Display Name</label>
-                          <input type="text" id="profileNameInput" class="form-input" value="Guest">
+                          <input type="text" id="profileNameInput" class="form-input" value="Guest" maxlength="80">
                         </div>
                         <div class="form-group">
                           <label class="form-label" for="profileEmailInput">Email Address</label>
-                          <input type="email" id="profileEmailInput" class="form-input" placeholder="guest@local (Sign in to sync)" value="">
+                          <input type="email" id="profileEmailInput" class="form-input" placeholder="guest@local (Sign in to sync)" value="" maxlength="120">
                         </div>
                       </div>
                     </div>
@@ -576,7 +580,7 @@
         <input type="hidden" id="habitEditId" value="">
         <div class="form-group">
           <label class="form-label" for="habitNameInput">Habit Name</label>
-          <input type="text" id="habitNameInput" class="form-input" placeholder="e.g. Read 20 Pages, Morning Run">
+          <input type="text" id="habitNameInput" class="form-input" placeholder="e.g. Read 20 Pages, Morning Run" maxlength="80">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
@@ -604,11 +608,11 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
           <div class="form-group">
             <label class="form-label" for="habitTargetGoalInput">Target Goal (Optional)</label>
-            <input type="text" id="habitTargetGoalInput" class="form-input" placeholder="e.g. 90 mins, 2 Liters">
+            <input type="text" id="habitTargetGoalInput" class="form-input" placeholder="e.g. 90 mins, 2 Liters" maxlength="60">
           </div>
           <div class="form-group">
             <label class="form-label" for="habitScheduleTimeInput">Scheduled Time</label>
-            <input type="text" id="habitScheduleTimeInput" class="form-input" placeholder="e.g. 07:00 AM, 5:30 PM">
+            <input type="text" id="habitScheduleTimeInput" class="form-input" placeholder="e.g. 07:00 AM, 5:30 PM" maxlength="60">
           </div>
         </div>
       </div>
@@ -632,7 +636,7 @@
         <input type="hidden" id="targetEditId" value="">
         <div class="form-group">
           <label class="form-label" for="targetTitleInput">Target Name</label>
-          <input type="text" id="targetTitleInput" class="form-input" placeholder="e.g. Marathon Training, Q4 Revenue">
+          <input type="text" id="targetTitleInput" class="form-input" placeholder="e.g. Marathon Training, Q4 Revenue" maxlength="80">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
@@ -662,7 +666,7 @@
           </div>
           <div class="form-group">
             <label class="form-label" for="targetUnitInput">Unit</label>
-            <input type="text" id="targetUnitInput" class="form-input" placeholder="km, $, books">
+            <input type="text" id="targetUnitInput" class="form-input" placeholder="km, $, books" maxlength="30">
           </div>
         </div>
       </div>
@@ -709,11 +713,11 @@
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label" for="newCategoryNameInput">Category Name</label>
-          <input type="text" id="newCategoryNameInput" class="form-input" placeholder="e.g. Finance, Creativity, Wellness">
+          <input type="text" id="newCategoryNameInput" class="form-input" placeholder="e.g. Finance, Creativity, Wellness" maxlength="40">
         </div>
         <div class="form-group">
           <label class="form-label" for="newCategoryIconInput">Icon Name <span style="font-weight: 400; text-transform: none; font-size: 11px;">(Material Symbol)</span></label>
-          <input type="text" id="newCategoryIconInput" class="form-input" placeholder="e.g. bolt, star, palette, school">
+          <input type="text" id="newCategoryIconInput" class="form-input" placeholder="e.g. bolt, star, palette, school" maxlength="40">
           <span style="font-size: 12px; color: var(--on-surface-variant); margin-top: 2px; display: block;">Browse at fonts.google.com/icons</span>
         </div>
       </div>
@@ -804,6 +808,8 @@
 
   <!-- Supabase SDK v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Optional Local Configuration (gitignored) -->
+  <script src="config.js" onerror="/* config.js is optional; offline mode active */"></script>
   <!-- Supabase Backend Layer -->
   <script src="supabase-client.js"></script>
   <!-- Core Application Logic -->

@@ -18,3 +18,13 @@ scratch/
 market analysis/
 stitch_momentum_habit_tracker/
 maps-pin.png
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+auth.json
+config.js

@@ -4,6 +4,29 @@
  */
 
 // ==========================================================================
+// Security & Sanitization Utilities
+// ==========================================================================
+function escapeHTML(str) {
+  if (str === null || str === undefined) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function sanitizeUrl(url) {
+  if (!url || typeof url !== "string") return "";
+  const trimmed = url.trim();
+  // Allow safe http(s) protocols, relative paths, and safe raster data URIs (excluding SVG XML)
+  if (/^(https?:\/\/|\/|data:image\/(png|jpe?g|webp|gif);base64,)/i.test(trimmed)) {
+    return trimmed;
+  }
+  return "";
+}
+
+// ==========================================================================
 // Default State Data
 // ==========================================================================
 const DEFAULT_STATE = {
@@ -181,6 +204,9 @@ class MomentumApp {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
     } catch (e) {
       console.error("Could not save state to localStorage:", e);
+      if (e.name === "QuotaExceededError" || e.code === 22) {
+        this.showToast("Local storage quota exceeded. Please clean up old items.", "info");
+      }
     }
   }
 
@@ -284,7 +310,9 @@ class MomentumApp {
   }
 
   getDaysRemaining(deadlineStr) {
+    if (!deadlineStr || typeof deadlineStr !== "string") return 999;
     const deadline = new Date(deadlineStr);
+    if (isNaN(deadline.getTime())) return 999;
     const now = new Date();
     // Normalize to midnight
     deadline.setHours(0, 0, 0, 0);
@@ -327,8 +355,10 @@ class MomentumApp {
     if (headerName) headerName.textContent = this.state.profile.name || "Guest";
     const headerAvatar = document.getElementById("headerAvatar");
     if (headerAvatar) {
-      if (this.state.profile.avatar) {
-        headerAvatar.innerHTML = `<img src="${this.state.profile.avatar}" alt="${this.state.profile.name || 'User'}">`;
+      const safeAvatar = sanitizeUrl(this.state.profile.avatar);
+      const safeName = escapeHTML(this.state.profile.name || "User");
+      if (safeAvatar) {
+        headerAvatar.innerHTML = `<img src="${escapeHTML(safeAvatar)}" alt="${safeName}">`;
       } else {
         headerAvatar.innerHTML = `<span class="material-symbols-outlined" style="font-size: 20px;">person</span>`;
       }
@@ -344,6 +374,7 @@ class MomentumApp {
 
     // Render Today's Focus Habit Cards
     const container = document.getElementById("dashboardHabitList");
+    if (!container) return;
     container.innerHTML = "";
 
     const activeHabits = this.state.habits.filter(h => !h.archived);
@@ -375,10 +406,10 @@ class MomentumApp {
             <span class="material-symbols-outlined" style="font-size: 16px;">check</span>
           </button>
           <div class="habit-info-group">
-            <h3 class="habit-title">${habit.name}</h3>
+            <h3 class="habit-title">${escapeHTML(habit.name)}</h3>
             <span class="habit-category-tag">
               <span class="category-dot ${categoryDotClass}"></span>
-              ${habit.category} • ${habit.targetGoal || habit.frequency}
+              ${escapeHTML(habit.category)} • ${escapeHTML(habit.targetGoal || habit.frequency)}
             </span>
           </div>
         </div>
@@ -394,7 +425,7 @@ class MomentumApp {
           ` : `
             <div class="habit-metric-box">
               <span class="metric-label">Schedule</span>
-              <span class="metric-value ${habit.schedule.includes('PM') ? 'schedule-red' : ''}">${habit.schedule}</span>
+              <span class="metric-value ${habit.schedule && habit.schedule.includes('PM') ? 'schedule-red' : ''}">${escapeHTML(habit.schedule || 'Daily')}</span>
             </div>
           `}
         </div>
@@ -462,8 +493,8 @@ class MomentumApp {
       item.className = "target-mini-item";
       item.innerHTML = `
         <div class="target-mini-header">
-          <span style="color: var(--on-surface);">${target.title}</span>
-          <span class="target-fraction">${target.current} / ${target.goal} ${target.unit}</span>
+          <span style="color: var(--on-surface);">${escapeHTML(target.title)}</span>
+          <span class="target-fraction">${Number(target.current) || 0} / ${Number(target.goal) || 0} ${escapeHTML(target.unit)}</span>
         </div>
         <div class="progress-bar-track">
           <div class="progress-bar-fill ${fillClass}" style="width: ${pct}%;"></div>
@@ -619,7 +650,7 @@ class MomentumApp {
 
     // Filter by Category
     if (categoryFilter !== "all") {
-      list = list.filter(h => h.category.toLowerCase() === categoryFilter.toLowerCase());
+      list = list.filter(h => (h.category || "").toLowerCase() === categoryFilter.toLowerCase());
     }
 
     // Filter by Status
@@ -667,16 +698,16 @@ class MomentumApp {
             ${habit.completed ? '<span class="material-symbols-outlined" style="font-size: 14px;">check</span>' : ''}
           </button>
           <span style="font-size: 15px; font-weight: 600; color: var(--on-surface); ${habit.completed ? 'text-decoration: line-through; opacity: 0.6;' : ''}">
-            ${habit.name}
+            ${escapeHTML(habit.name)}
           </span>
         </div>
 
         <div>
-          <span class="category-badge ${categoryBadgeClass}">${habit.category}</span>
+          <span class="category-badge ${categoryBadgeClass}">${escapeHTML(habit.category)}</span>
         </div>
 
         <div style="font-size: 14px; color: var(--on-surface-variant);">
-          ${habit.frequency}
+          ${escapeHTML(habit.frequency)}
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; padding-right: 16px;">
@@ -684,7 +715,7 @@ class MomentumApp {
             <span class="material-symbols-outlined" style="font-size: 16px; color: ${habit.streak > 0 ? 'var(--tertiary)' : 'var(--outline)'};">local_fire_department</span>
             ${habit.streak}
           </div>
-          <span style="font-size: 13px; color: var(--outline);">${habit.bestStreak}</span>
+          <span style="font-size: 13px; color: var(--outline);">${Number(habit.bestStreak ?? habit.best_streak ?? 0)}</span>
         </div>
 
         <div class="table-cell-actions">
@@ -778,14 +809,22 @@ class MomentumApp {
         fillClass = "fill-amber";
       }
 
+      let formattedDate = "No deadline";
+      if (target.deadline) {
+        const d = new Date(target.deadline);
+        if (!isNaN(d.getTime())) {
+          formattedDate = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+      }
+
       const card = document.createElement("div");
       card.className = "target-card";
       card.innerHTML = `
         <div class="target-card-ambient ${ambientClass}"></div>
         <div class="target-header">
           <div>
-            <span class="category-badge badge-personal" style="font-size: 11px;">${target.category}</span>
-            <h3 class="target-title">${target.title}</h3>
+            <span class="category-badge badge-personal" style="font-size: 11px;">${escapeHTML(target.category)}</span>
+            <h3 class="target-title">${escapeHTML(target.title)}</h3>
           </div>
           <div style="display: flex; gap: 2px; position: relative; z-index: 2;">
             <button class="action-icon-btn target-menu-btn" data-id="${target.id}" title="Edit target">
@@ -800,8 +839,8 @@ class MomentumApp {
         <div class="target-progress-body">
           <div class="target-numbers-row">
             <div>
-              <span class="target-current-val">${target.unit === '$' ? '$' + target.current : target.current}</span>
-              <span class="target-total-val">/ ${target.unit === '$' ? '$' + target.goal : target.goal + ' ' + target.unit}</span>
+              <span class="target-current-val">${target.unit === '$' ? '$' + (Number(target.current) || 0) : (Number(target.current) || 0)}</span>
+              <span class="target-total-val">/ ${target.unit === '$' ? '$' + (Number(target.goal) || 0) : (Number(target.goal) || 0) + ' ' + escapeHTML(target.unit)}</span>
             </div>
             <span class="target-pct-text">${pct}%</span>
           </div>
@@ -813,12 +852,12 @@ class MomentumApp {
         <div class="target-footer">
           <div class="target-date-info">
             <span class="material-symbols-outlined" style="font-size: 16px;">calendar_today</span>
-            <span>${new Date(target.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+            <span>${escapeHTML(formattedDate)}</span>
           </div>
 
           <div class="target-pill-status ${statusPillClass}">
             <span class="material-symbols-outlined" style="font-size: 14px;">${statusIcon}</span>
-            <span>${statusText}</span>
+            <span>${escapeHTML(statusText)}</span>
           </div>
         </div>
 
@@ -894,7 +933,7 @@ class MomentumApp {
     const bestHabit = this.state.habits.find(h => (h.bestStreak || h.best_streak || h.streak || 0) === allTimeBest);
     const bestHabitSub = document.getElementById("analyticsBestHabitSub");
     if (bestHabitSub) {
-      bestHabitSub.innerHTML = `<span class="material-symbols-outlined" style="font-size: 16px;">award_star</span> ${bestHabit ? bestHabit.name : 'Best Routine'}`;
+      bestHabitSub.innerHTML = `<span class="material-symbols-outlined" style="font-size: 16px;">award_star</span> ${bestHabit ? escapeHTML(bestHabit.name) : 'Best Routine'}`;
     }
 
     // 2. 30-Day Consistency Grid (5 Weeks Calendar Heatmap)
@@ -1027,8 +1066,8 @@ class MomentumApp {
         row.innerHTML = `
           <div class="cat-row-label">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="material-symbols-outlined" style="font-size: 18px; color: ${hexColor};">${cat.icon || 'folder'}</span>
-              <span style="color: var(--on-surface); font-weight: 600;">${cat.name}</span>
+              <span class="material-symbols-outlined" style="font-size: 18px; color: ${hexColor};">${escapeHTML(cat.icon || 'folder')}</span>
+              <span style="color: var(--on-surface); font-weight: 600;">${escapeHTML(cat.name)}</span>
             </div>
             <span style="color: var(--on-surface-variant); font-size: 13px; font-weight: 600;">${catConsistency}% <span style="font-weight: 400; opacity: 0.8;">(${habitCountText})</span></span>
           </div>
@@ -1053,8 +1092,10 @@ class MomentumApp {
 
     const settingsAvatarContainer = document.getElementById("settingsAvatarContainer");
     if (settingsAvatarContainer) {
-      if (this.state.profile.avatar) {
-        settingsAvatarContainer.innerHTML = `<img src="${this.state.profile.avatar}" alt="${this.state.profile.name || 'User'}" id="settingsAvatarImg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+      const safeAvatar = sanitizeUrl(this.state.profile.avatar);
+      const safeName = escapeHTML(this.state.profile.name || "User");
+      if (safeAvatar) {
+        settingsAvatarContainer.innerHTML = `<img src="${escapeHTML(safeAvatar)}" alt="${safeName}" id="settingsAvatarImg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
       } else {
         settingsAvatarContainer.innerHTML = `
           <div class="settings-avatar-placeholder" id="settingsAvatarPlaceholder">
@@ -1080,8 +1121,8 @@ class MomentumApp {
         card.innerHTML = `
           <div style="display: flex; align-items: center; gap: 10px; width: 100%; justify-content: space-between;">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="material-symbols-outlined" style="color: var(--${cat.color || 'primary'});">${cat.icon || 'folder'}</span>
-              <strong style="font-size: 15px;">${cat.name}</strong>
+              <span class="material-symbols-outlined" style="color: var(--${cat.color || 'primary'});">${escapeHTML(cat.icon || 'folder')}</span>
+              <strong style="font-size: 15px;">${escapeHTML(cat.name)}</strong>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
               <span style="font-size: 12px; color: var(--on-surface-variant);">${cat.count} habits</span>
@@ -1379,6 +1420,11 @@ class MomentumApp {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
+    if (this._confettiAnimId) {
+      cancelAnimationFrame(this._confettiAnimId);
+      this._confettiAnimId = null;
+    }
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -1400,7 +1446,6 @@ class MomentumApp {
       });
     }
 
-    let animationFrame;
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       let alive = 0;
@@ -1424,9 +1469,10 @@ class MomentumApp {
       });
 
       if (alive > 0) {
-        animationFrame = requestAnimationFrame(render);
+        this._confettiAnimId = requestAnimationFrame(render);
       } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this._confettiAnimId = null;
       }
     };
 
@@ -1446,7 +1492,7 @@ class MomentumApp {
 
     toast.innerHTML = `
       <span class="material-symbols-outlined" style="color: ${type === 'success' ? 'var(--secondary)' : 'var(--primary)'}; font-size: 20px;">${iconName}</span>
-      <span>${message}</span>
+      <span>${escapeHTML(message)}</span>
     `;
 
     container.appendChild(toast);
@@ -1809,6 +1855,7 @@ class MomentumApp {
 
     const tabSignIn = document.getElementById("authTabSignIn");
     const tabSignUp = document.getElementById("authTabSignUp");
+    const passwordInput = document.getElementById("authPasswordInput");
 
     if (tab === "signup") {
       title.textContent = "Create Supabase Account";
@@ -1819,6 +1866,7 @@ class MomentumApp {
       if (helperText) helperText.textContent = "Create your account to start syncing habits to Supabase Cloud.";
       if (switchPromptText) switchPromptText.textContent = "Already have an account?";
       if (switchTabBtn) switchTabBtn.textContent = "Sign In";
+      if (passwordInput) passwordInput.setAttribute("autocomplete", "new-password");
     } else {
       title.textContent = "Sign In to Momentum";
       if (tabSignUp) tabSignUp.classList.remove("active");
@@ -1828,6 +1876,7 @@ class MomentumApp {
       if (helperText) helperText.textContent = "Sign in to sync your habits, streaks, and targets with Supabase Cloud.";
       if (switchPromptText) switchPromptText.textContent = "Don't have an account yet?";
       if (switchTabBtn) switchTabBtn.textContent = "Create one";
+      if (passwordInput) passwordInput.setAttribute("autocomplete", "current-password");
     }
 
     modal.classList.add("open");
