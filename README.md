@@ -2,8 +2,6 @@
 
 > A corporate modern, high-productivity habit and milestone tracker web application built on the **Kinetic Precision** design system.
 
-![Momentum Banner](https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=1200&q=80)
-
 ---
 
 ## 🌟 Highlights & Features
@@ -16,27 +14,6 @@
 - **📂 Category Management**: Organize habits across *Health*, *Work*, *Personal*, *Learning*, or custom categories with custom icons.
 - **📱 Mobile Responsive & Bottom Navigation**: Sleek mobile bottom navigation bar with a centered floating action button (FAB) for instant one-tap habit creation.
 - **☁️ Supabase Cloud Sync & Authentication**: Real-time cloud synchronization, secure authentication, and multi-device persistence powered by Supabase PostgreSQL.
-
----
-
-## 🚀 Getting Started
-
-### Option 1: Direct Browser
-Simply open [`index.html`](index.html) in any modern web browser.
-
-### Option 2: Local HTTP Server
-Run a lightweight HTTP server:
-
-```bash
-# Python
-python -m http.server 8080
-
-# Or Node.js
-npx serve .
-```
-Then visit `http://localhost:8080`.
-
----
 
 ## 🛠️ Tech Stack & Design System
 
