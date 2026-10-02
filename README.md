@@ -15,6 +15,8 @@
 - **📱 Mobile Responsive & Bottom Navigation**: Sleek mobile bottom navigation bar with a centered floating action button (FAB) for instant one-tap habit creation.
 - **☁️ Supabase Cloud Sync & Authentication**: Real-time cloud synchronization, secure authentication, and multi-device persistence powered by Supabase PostgreSQL.
 
+---
+
 ## 🛠️ Tech Stack & Design System
 
 - **HTML5 & Vanilla JavaScript**: Modular reactive store and client-side router without framework bloat.
